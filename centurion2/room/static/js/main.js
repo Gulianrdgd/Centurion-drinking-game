@@ -1,5 +1,4 @@
         //reconnecting things
-        var trying = false;
         var today = new Date();
         var starttime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
@@ -86,5 +85,12 @@
         function reconnect(starttime) {
             console.log(starttime);
             var today = new Date();
-            var starttime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            var h_now = starttime.slice(0,starttime.indexOf(':'));
+            var m_now = starttime.slice(starttime.indexOf(':'),starttime.lastIndexOf(':'));
+            var s_now = starttime.slice(starttime.lastIndexOf(':'), starttime.length);
+            var sum = ((h_now-h)*60*60)+((m_now-m)*60)+(s_now-s);
+            startcenturion(sum);
         }
