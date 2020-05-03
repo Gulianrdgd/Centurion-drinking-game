@@ -4,65 +4,35 @@
     <meta charset="utf-8"/>
     <title>Centurion Room {{ room_name }}</title>
 </head>
-<body>
-<h1>Welcomee to room: {{ room_name }}</h1>
+<body style="background: #e62272">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    {% load static %}
+    <script src="{% static 'js/Reconnectingsocket.js' %}"></script>
+        <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
+    <div class="welcome" style="margin-right: auto; margin-left: auto; padding-top: 2%">
+        <h1>Welcomee to room: {{ room_name }}</h1>
+        <h1 id="countdown"></h1>
+    </div>
+    <div>
+        <p id="centurion"><p>
+    </div>
+<div class="w3-cell-row">
 
-    <p id="countdown"></p>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Send">
-    {{ room_name|json_script:"room-name" }}
-    <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+  <div class="w3-container w3-cell">
+    <p>Hello W3.CSS Layout.</p>
+  </div>
 
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/room/'
-            + roomName
-            + '/'
-        );
+  <div class="w3-container w3-cell w3-center" style="width: 20%">
+      <textarea id="chat-log" class="w3-border-0 w3-round-large" cols="40" rows="20"></textarea><br>
+      <input id="chat-message-input" class="w3-input w3-border-0 w3-round-large" type="text" size="100"><br>
+      <input id="chat-message-submit" class="w3-button" style="background-color: white; color: #e62272;
+            margin-top:2%; display: inline-block" type="button" value="Send">
+      {{ room_name|json_script:"room-name" }}
+      <script src="{% static 'js/main.js' %}"></script>
+  </div>
 
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            if(data.message==="/start centurion"){
-                lets_go();
-            }
-            document.querySelector('#chat-log').value += (data.message + '\n');
-        };
-
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
-            }
-        };
-
-        document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-            messageInputDom.value = '';
-        };
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        async function lets_go() {
-            document.getElementById("countdown").innerHTML = "Okay let's go!" ;
-            await sleep(2);
-            for (let i = 10; i >= 0; i--) {
-                document.getElementById("countdown").innerHTML = i ;
-                await sleep(1000);
-            };
-            document.getElementById("countdown").innerHTML = '<>'
-        }
-    </script>
+</div>
 </body>
 </html>
