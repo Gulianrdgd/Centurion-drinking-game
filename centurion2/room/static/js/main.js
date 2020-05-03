@@ -79,9 +79,9 @@
             startcenturion(0);
         }
         function startcenturion(start){
-            var soundID = "centurion";
-            createjs.Sound.registerSound("/static/audio/centurion.mp3", {id:soundID, startTime:start});
-            createjs.Sound.play(soundID);
+            var scooter = document.getElementById("centurion");
+            scooter.currentTime=start;
+            scooter.play();
         }
         function reconnect(starttime) {
             console.log(starttime);
