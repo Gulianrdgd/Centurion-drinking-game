@@ -91,6 +91,6 @@
             var h_now = starttime.slice(0,starttime.indexOf(':'));
             var m_now = starttime.slice(starttime.indexOf(':'),starttime.lastIndexOf(':'));
             var s_now = starttime.slice(starttime.lastIndexOf(':'), starttime.length);
-            var sum = ((h_now-h)*60*60)+((m_now-m)*60)+(s_now-s);
+            var sum = Math.floor((h_now-h)*60*60)+((m_now-m)*60)+(s_now-s));
             startcenturion(sum);
         }
