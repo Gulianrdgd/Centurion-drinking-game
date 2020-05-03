@@ -1,0 +1,38 @@
+body {
+  background-color: #e62272;
+}
+
+.welcome{
+    padding-top: 3%;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    color: white;
+}
+
+.form{
+    background-color: transparent;
+    color: #e62272;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#room-name-input{
+        background-color: transparent;
+    color: #e62272;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align: center;
+
+}
+
