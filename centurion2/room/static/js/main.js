@@ -78,10 +78,13 @@
             startcenturion(0);
         }
         function startcenturion(start){
-            var scooter = document.getElementById("centurion");
-            scooter.currentTime=start;
-            scooter.play();
+            var widget = Mixcloud.PlayerWidget(document.getElementById("centurion"));
+            widget.ready.then(function() {
+        // Put code that interacts with the widget here
+            });
         }
+            widget.seek(start);
+            widget.play();
         function reconnect(starttime) {
             console.log(starttime);
             var today = new Date();
