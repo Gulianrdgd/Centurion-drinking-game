@@ -77,14 +77,16 @@
             document.getElementById("countdown").innerHTML = ''
             startcenturion(0);
         }
+
         function startcenturion(start){
             var widget = Mixcloud.PlayerWidget(document.getElementById("centurion"));
             widget.ready.then(function() {
-        // Put code that interacts with the widget here
+            // Put code that interacts with the widget here
+                this.seek(start);
+                this.play();
             });
         }
-            widget.seek(start);
-            widget.play();
+
         function reconnect(starttime) {
             console.log(starttime);
             var today = new Date();
