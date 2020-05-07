@@ -2,6 +2,8 @@
         var today = new Date();
         var starttime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        var noShots=0;
+        var index=0;
 
         const chatSocket = new ReconnectingWebSocket(
             'ws://'
@@ -21,6 +23,9 @@
             }
             else{
             document.querySelector('#chat-log').value += (data.message + '\n');
+            add_message();
+            arcMove();
+            index++;
             }
         };
 
@@ -82,21 +87,86 @@
             var widget = Mixcloud.PlayerWidget(document.getElementById("centurion"));
             widget.ready.then(function() {
             // Put code that interacts with the widget here
-                this.seek(start);
-                this.play();
+                console.log("hello!")
+                if(widget.seek(start)) {
+                    widget.play();
+                }
             });
         }
 
         function reconnect(starttime) {
             console.log(starttime);
             var today = new Date();
-            var h = today.getHours();
-            var m = today.getMinutes();
-            var s = today.getSeconds();
-            var h_now = starttime.slice(0,starttime.indexOf(':'));
-            var m_now = starttime.slice(starttime.indexOf(':'),starttime.lastIndexOf(':'));
-            var s_now = starttime.slice(starttime.lastIndexOf(':'), starttime.length);
+            var h_now = today.getHours();
+            var m_now = today.getMinutes();
+            var s_now = today.getSeconds();
+            var h = starttime.slice(0,starttime.indexOf(':'));
+            var m = starttime.slice(starttime.indexOf(':')+1,starttime.lastIndexOf(':'));
+            var s = starttime.slice(starttime.lastIndexOf(':')+1, starttime.length);
             var sum = Math.floor(((h_now-h)*60*60)+((m_now-m)*60)+(s_now-s));
             console.log(sum);
             startcenturion(sum);
         }
+
+        var can = document.getElementById('canvas'),
+            c = can.getContext('2d');
+
+        var posX = can.width / 2,
+            posY = can.height / 2+30,
+            procent = 0,
+            oneProcent = 360 / 100,
+            result = oneProcent * 64;
+
+        c.lineCap = 'round';
+        arcMove();
+
+        function add_message(){
+            var list=document.getElementById("centurionMessages");
+            var node = document.createElement("li");
+                node.innerHTML+="<div class=\"w3-card w3-center w3-round-large\" style='background: white; margin-top: 10px'>" +
+                    "<div class=\"w3-cell-row w3-center\" style='padding: 10px'>" +
+                        "<div class=\"w3-container w3-center w3-cell w3-third\"><p style=\" font-family: 'Oswald'; font-size: 20px\" class='w3-center'>"+messages[index].text+"</p></div>" +
+                        "<div class=\"w3-container w3-center w3-cell w3-third\">" +
+                            "<img class=\"w3-center\" style=\"max-width: 80px\" src=\"/static/media/"+messages[index].emoji+"\"></div>" +
+                        "<div class=\"w3-container w3-center w3-cell w3-third\"><p style=\" font-family: 'Oswald'; font-size: 20px\"  class=\"w3-center\">"+messages[index].text2+"</p></div>" +
+                    "</div>" +
+                "</div>";
+            list.insertBefore(node,list.firstChild);
+        }
+
+        function arcMove(){
+            var deegres = noShots;
+                c.clearRect( 0, 0, can.width, can.height );
+                procent = deegres / oneProcent;
+
+                c.beginPath();
+                c.arc( posX, posY, 85, (Math.PI/180) * 270, (Math.PI/180) * (270 + 360) );
+                c.fillStyle = 'white';
+                c.fill();
+
+                c.beginPath();
+                c.arc( posX, posY, 70, (Math.PI/180) * 270, (Math.PI/180) * (270 + 360) );
+                c.strokeStyle = '#b1b1b1';
+                c.lineWidth = '10';
+                c.stroke();
+
+                c.beginPath();
+                c.strokeStyle = '#e62272';
+                c.lineWidth = '10';
+                c.arc( posX, posY, 70, (Math.PI/180) * 270, (Math.PI/180) * (270 + deegres) );
+                c.stroke();
+                if( deegres >= result ) clearInterval(acrInterval);
+
+                c.textAlign="center";
+                c.fillStyle='white';
+                c.font = '30px Arial';
+                c.fillText("Number of shots taken", can.width/2, 30);
+
+                c.textAlign="center";
+                c.fillStyle='#e62272';
+                c.font = '30px Arial';
+                c.fillText(noShots+"/100", posX, posY+10);
+                noShots++;
+
+        }
+

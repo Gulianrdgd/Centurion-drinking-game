@@ -1,5 +1,7 @@
+
 body {
-  background-color: #e62272;
+    background-color: #e62272;
+    overflow: hidden;
 }
 
 .welcome{
@@ -34,5 +36,14 @@ body {
     box-sizing: border-box;
     text-align: center;
 
+}
+
+#player {
+    height: 60px;
+    position: fixed;
+    bottom:0%;
+    width:100%;
+    background-color: #393838;
+    opacity: 1;
 }
 
