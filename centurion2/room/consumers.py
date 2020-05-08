@@ -4,8 +4,10 @@ from channels.generic.websocket import WebsocketConsumer
 
 started = False
 starttime=0
+users=[]
 
 class ChatConsumer(WebsocketConsumer):
+
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'room_%s' % self.room_name
@@ -30,27 +32,42 @@ class ChatConsumer(WebsocketConsumer):
         global started
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        username = text_data_json['username']
         if message == "/start centurion":
             starttime = text_data_json['starttime']
             started = True
+        elif message.startswith("/set user"):
+            if username in users:
+                users.remove(username)
+
+            if message.split("/set user", 1)[1] in users:
+                message="/set user" + message.split("/set user", 1)[1] + " - Doppleganger"
+                users.append(message.split("/set user", 1)[1] + " - Doppleganger")
+            else:
+                users.append(message.split("/set user", 1)[1])
+
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'username': username,
             }
         )
 
     # Receive message from room group
     def chat_message(self, event):
         message = event['message']
+        username = event['username']
         if message == "/reconnect" and started:
             self.send(text_data=json.dumps({
-                'message': "/connecttime" + starttime
+                'message': "/connecttime" + starttime,
+                'username': "Server"
             }))
         else:
             # Send message to WebSocket
             self.send(text_data=json.dumps({
-                'message': message
+                'message': message,
+                'username': username
             }))

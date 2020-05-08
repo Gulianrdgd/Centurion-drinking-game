@@ -15,15 +15,15 @@
     <script src="//widget.mixcloud.com/media/js/widgetApi.js" type="text/javascript"></script>
     <script src="{% static 'js/messages.js' %}"></script>
 
-    <div class="welcome" style="margin-right: auto; margin-left: auto; padding-top: 2%">
-        <h1>Welcomee to room: {{ room_name }}</h1>
+    <div class="welcome" style="margin-right: auto; margin-left: auto; padding-top: 1%">
+        <h1>Welcomee to room: <br>{{ room_name }}</h1>
         <h1 id="countdown"></h1>
     </div>
 
     <div class="w3-cell-row" style="margin-top: 2%;">
 
         <div class="w3-container w3-cell"  id="shots" style="width: 10%">
-                <canvas id="canvas" width="250" height="250"></canvas>
+                <canvas id="canvas" width="300" height="300"></canvas>
         </div>
 
         <div class="w3-container w3-cell w3-center message" style="margin-right: 10%">

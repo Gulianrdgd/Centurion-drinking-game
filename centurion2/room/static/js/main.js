@@ -4,6 +4,9 @@
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         var noShots=0;
         var index=0;
+        var username=" No_user_name";
+        var tryingReconnect=false;
+        var tryingUsername=false;
 
         const chatSocket = new ReconnectingWebSocket(
             'ws://'
@@ -19,13 +22,24 @@
                 lets_go();
             }
             else if(data.message.startsWith("/connecttime")){
-                reconnect(data.message.substring(12))
+                if(tryingReconnect) {
+                    reconnect(data.message.substring(12));
+                    tryingReconnect=false;
+                }
             }
-            else{
-            document.querySelector('#chat-log').value += (data.message + '\n');
-            add_message();
-            arcMove();
-            index++;
+            else if(data.message.startsWith("/set user")){
+                if(tryingUsername) {
+                    username=" " + data.message.substring(10);
+                    tryingUsername=false;
+                }
+            }
+            else {
+                var chatLog= document.querySelector('#chat-log')
+                chatLog.value += (data.username + ": " + data.message + '\n');
+                chatLog.scrollTop = chatLog.scrollHeight;
+                add_message();
+                arcMove();
+                index++;
             }
         };
 
@@ -48,20 +62,31 @@
                 var starttime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                 chatSocket.send(JSON.stringify({
                     'message': message,
+                    'username': "Server",
                     'starttime' : starttime,
             }));
             messageInputDom.value = '';
             }
             else if(message==="/reconnect"){
-                trying=true;
+                tryingReconnect=true;
                 chatSocket.send(JSON.stringify({
-                'message': message
+                    'message': message,
+                    'username': username
                 }));
                 messageInputDom.value = '';
                 }
+            else if(message.startsWith("/set user")){
+                    tryingUsername=true;
+                    chatSocket.send(JSON.stringify({
+                        'message': message,
+                        'username': username
+                    }));
+                    messageInputDom.value = '';
+                }
             else {
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': message,
+                'username': username
             }));
             messageInputDom.value = '';
             }
@@ -87,12 +112,26 @@
             var widget = Mixcloud.PlayerWidget(document.getElementById("centurion"));
             widget.ready.then(function() {
             // Put code that interacts with the widget here
-                console.log("hello!")
-                if(widget.seek(start)) {
+                if(start===0){
                     widget.play();
-                }
+                    var t=setInterval(checkShot,1000);
+                }else {
+                        widget.seek(start);
+                        widget.play();
+                        var t=setInterval(checkShot,1000);
+                    }
             });
         }
+
+
+        function checkShot(){
+            if (noShots===100){
+                clearInterval(checkShot());
+            }
+            var widget = Mixcloud.PlayerWidget(document.getElementById("centurion"));
+            console.log(widget.Position());
+        }
+
 
         function reconnect(starttime) {
             console.log(starttime);
@@ -115,7 +154,7 @@
             posY = can.height / 2+30,
             procent = 0,
             oneProcent = 360 / 100,
-            result = oneProcent * 64;
+            result = oneProcent * 100;
 
         c.lineCap = 'round';
         arcMove();
@@ -125,19 +164,26 @@
             var node = document.createElement("li");
                 node.innerHTML+="<div class=\"w3-card w3-center w3-round-large\" style='background: white; margin-top: 10px'>" +
                     "<div class=\"w3-cell-row w3-center\" style='padding: 10px'>" +
-                        "<div class=\"w3-container w3-center w3-cell w3-third\"><p style=\" font-family: 'Oswald'; font-size: 20px\" class='w3-center'>"+messages[index].text+"</p></div>" +
+                        "<div class=\"w3-container w3-center w3-cell w3-third\"><p style=\" font-family: sans-serif; font-size: 20px\" class='w3-center'>"+messages[index].text+"</p></div>" +
                         "<div class=\"w3-container w3-center w3-cell w3-third\">" +
                             "<img class=\"w3-center\" style=\"max-width: 80px\" src=\"/static/media/"+messages[index].emoji+"\"></div>" +
-                        "<div class=\"w3-container w3-center w3-cell w3-third\"><p style=\" font-family: 'Oswald'; font-size: 20px\"  class=\"w3-center\">"+messages[index].text2+"</p></div>" +
+                        "<div class=\"w3-container w3-center w3-cell w3-third\"><p style=\" font-family: sans-serif; font-size: 20px\"  class=\"w3-center\">"+messages[index].text2+"</p></div>" +
                     "</div>" +
                 "</div>";
             list.insertBefore(node,list.firstChild);
         }
 
+        document.querySelector('#chat-log').value += "Welcome to centurion! \n\n" +
+                                            "If you want to start the game just type '/start centurion'. \n\n" +
+                                            "If you want to change your username type '/set user ' Followed by your chosen username. \n\n"+
+                                            "If that name is already taken, then everyone knows you are a doppelganger\n\n"+
+                                            "If you got disconnect you can come back to the room and type '/reconnect'\n\n"+
+                                            "Centurion will skip forward to where everyone else is\n\n"+
+                                            "Have fun!\n"
         function arcMove(){
-            var deegres = noShots;
+            var deegres = noShots*3.6;
                 c.clearRect( 0, 0, can.width, can.height );
-                procent = deegres / oneProcent;
+                procent = deegres / 100;
 
                 c.beginPath();
                 c.arc( posX, posY, 85, (Math.PI/180) * 270, (Math.PI/180) * (270 + 360) );
@@ -155,12 +201,11 @@
                 c.lineWidth = '10';
                 c.arc( posX, posY, 70, (Math.PI/180) * 270, (Math.PI/180) * (270 + deegres) );
                 c.stroke();
-                if( deegres >= result ) clearInterval(acrInterval);
 
                 c.textAlign="center";
                 c.fillStyle='white';
                 c.font = '30px Arial';
-                c.fillText("Number of shots taken", can.width/2, 30);
+                c.fillText("Number of shots taken", can.width/2+5, 40);
 
                 c.textAlign="center";
                 c.fillStyle='#e62272';
