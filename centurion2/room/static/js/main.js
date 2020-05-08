@@ -7,6 +7,7 @@
         var username=" No_user_name";
         var tryingReconnect=false;
         var tryingUsername=false;
+        var widget;
 
         const chatSocket = new ReconnectingWebSocket(
             'ws://'
@@ -108,8 +109,9 @@
             startcenturion(0);
         }
 
+
         function startcenturion(start){
-            var widget = Mixcloud.PlayerWidget(document.getElementById("centurion"));
+            widget = Mixcloud.PlayerWidget(document.getElementById("centurion"));
             widget.ready.then(function() {
             // Put code that interacts with the widget here
                 if(start===0){
@@ -128,8 +130,9 @@
             if (noShots===100){
                 clearInterval(checkShot());
             }
-            var widget = Mixcloud.PlayerWidget(document.getElementById("centurion"));
-            console.log(widget.Position());
+            widget.getPosition().then(function(position) {
+                console.log(position);
+            });
         }
 
 
