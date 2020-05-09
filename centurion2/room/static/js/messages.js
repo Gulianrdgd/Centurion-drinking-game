@@ -62,7 +62,7 @@ var messages = [{text:"This was the startshot", emoji:"start.png", text2:"You do
                 {text:"Horn sound", emoji:"shot.png", text2:"71 shots to go"},
                 {text:"Michael Calfan", emoji:"song.png", text2:"Resurrection"},
                 {text:"70 minutes to go!", emoji:"time.png", text2:"I believe in you!"},
-                {text:"console.log('hello world')", emoji:"shot.png", text2:"70 shots to go"},
+                {text:"console.log('Honk!')", emoji:"shot.png", text2:"70 shots to go"},
                 {text:"Basto", emoji:"song.png", text2:"Again and Again"},
                 {text:"Gigity", emoji:"shot.png", text2:"69 shots to go"},
                 {text:"David Guetaa feat. Sia", emoji:"song.png", text2:"Titanium"},
@@ -79,8 +79,8 @@ var messages = [{text:"This was the startshot", emoji:"start.png", text2:"You do
                 {text:"Down the hatch", emoji:"shot.png", text2:"63 shots to go"},
                 {text:"Jup another one", emoji:"shot.png", text2:"62 shots to go"},
                 {text:"The Bloody Beetroots feat. Steve Aoki", emoji:"song.png", text2:"Warp 1.9"},
-                {text:"Drink please", emoji:"shot.png", text2:"61 shots to go"},
                 {text:"David Guetta &amp; Showtek feat. Vassy", emoji:"song.png", text2:"Bad"},
+                {text:"Drink please", emoji:"shot.png", text2:"61 shots to go"},
                 {text:"Half of your life", emoji:"shot.png", text2:"60 shots to go"},
                 {text:"Showtek &amp; Justin Prime", emoji:"song.png", text2:"Cannonball"},
                 {text:"60 minutes to go!", emoji:"time.png", text2:"Just one more hour!"},
@@ -216,3 +216,14 @@ var messages = [{text:"This was the startshot", emoji:"start.png", text2:"You do
                 {text:"Brooklyn", emoji:"shot.png", text2:"1 shots to go"},
                 {text:"Centurion!", emoji:"shot.png", text2:"You made it"},
                 ];
+
+var times = [   40, 43, 108, 147, 167, 186, 223, 225, 284, 286, 340, 343, 411,
+                413, 449, 459, 515, 516, 561, 575, 619, 635, 649, 669, 700,
+                757, 759, 812, 814, 874, 877, 935, 966, 995, 997, 1031, 1046,
+                1107, 1108, 1137, 1173, 1220, 1233, 1236, 1276, 1289, 1349,
+                1351, 1396, 1411, 1456, 1471, 1486, 1531, 1546, 1594, 1624,
+                1653, 1686, 1713, 1742, 1770, 1801, 1827, 1830, 1859, 1887,
+                1917, 1945, 1960,2004, 2033, 2064, 2125, 2128, 2179, 2194,
+                2225, 2245, 2305, 2306, 2350, 2374, 2432, 2434, 2446, 2460,
+                2489, 2534, 2555, 2584, 2607, 2635, 2663, 2696, 2729, 2744,
+                2784, 2786, 2824, 2849, 2879];

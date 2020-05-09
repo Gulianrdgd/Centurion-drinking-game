@@ -8,6 +8,9 @@
         var tryingReconnect=false;
         var tryingUsername=false;
         var widget;
+        var time=0;
+        var timeArr=[];
+        var t;
 
         const chatSocket = new ReconnectingWebSocket(
             'ws://'
@@ -38,9 +41,7 @@
                 var chatLog= document.querySelector('#chat-log')
                 chatLog.value += (data.username + ": " + data.message + '\n');
                 chatLog.scrollTop = chatLog.scrollHeight;
-                add_message();
-                arcMove();
-                index++;
+                console.log(timeArr);
             }
         };
 
@@ -116,23 +117,30 @@
             // Put code that interacts with the widget here
                 if(start===0){
                     widget.play();
-                    var t=setInterval(checkShot,1000);
+                    t=setInterval(checkShot,1000);
                 }else {
                         widget.seek(start);
                         widget.play();
-                        var t=setInterval(checkShot,1000);
+                        t=setInterval(checkShot,1000);
                     }
             });
         }
-
+        document.getElementById("eventclick").onclick = function () {
+            timeArr.push(Math.round(time));
+        }
 
         function checkShot(){
             if (noShots===100){
-                clearInterval(checkShot());
+                clearInterval(t);
             }
             widget.getPosition().then(function(position) {
-                console.log(position);
+                time=Math.round(position);
             });
+            console.log(time);
+            if(time===times[index]||time>times[index]){
+                add_message();
+                index++;
+            }
         }
 
 
@@ -174,6 +182,9 @@
                     "</div>" +
                 "</div>";
             list.insertBefore(node,list.firstChild);
+            if(messages[index].emoji==="shot.png"){
+                arcMove();
+            }
         }
 
         document.querySelector('#chat-log').value += "Welcome to centurion! \n\n" +
