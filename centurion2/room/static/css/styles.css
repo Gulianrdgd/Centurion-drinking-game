@@ -4,6 +4,16 @@ body {
     overflow: hidden;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
+@media (max-width:629px) {
+  div#centurionMessagesDiv {
+    display: none;
+  }
+}
+
 .welcome{
     padding-top: 3%;
     text-align: center;
