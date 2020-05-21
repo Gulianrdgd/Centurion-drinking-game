@@ -9,7 +9,6 @@
         var tryingUsername=false;
         var widget;
         var time=0;
-        var timeArr=[];
         var t;
 
         const chatSocket = new ReconnectingWebSocket(
@@ -99,7 +98,7 @@
 
         async function lets_go() {
             document.getElementById("countdown").innerHTML = "Okay let's go!" ;
-            await sleep(2000);
+            await sleep(1000);
             for (let i = 3; i >= 0; i--) {
                 document.getElementById("countdown").innerHTML = i ;
                 await sleep(1000);
@@ -125,18 +124,11 @@
                     }
             });
         }
-        document.getElementById("eventclick").onclick = function () {
-            timeArr.push(Math.round(time));
-        }
 
         function checkShot(){
-            if (noShots===100){
-                clearInterval(t);
-            }
             widget.getPosition().then(function(position) {
                 time=Math.round(position);
             });
-            console.log(time);
             if(time===times[index]||time>times[index]){
                 add_message();
                 index++;

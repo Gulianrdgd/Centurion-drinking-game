@@ -12,6 +12,10 @@ body {
   div#centurionMessagesDiv {
     display: none;
   }
+    div#logo2 {
+    display: none;
+  }
+
 }
 
 .welcome{
@@ -57,3 +61,7 @@ body {
     opacity: 1;
 }
 
+.logo{
+    max-width: 30%;
+    margin-top: 17%;
+}
