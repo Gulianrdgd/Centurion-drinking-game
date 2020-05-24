@@ -104,7 +104,7 @@
             }
             var today = new Date();
             starttime=today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-            document.getElementById("countdown").innerHTML = ''
+            document.getElementById("countdown").innerHTML = '';
             startcenturion(0);
         }
 
