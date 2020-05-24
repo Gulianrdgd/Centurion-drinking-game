@@ -12,7 +12,7 @@
         var t;
 
         const chatSocket = new ReconnectingWebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
             + '/ws/room/'
             + roomName
@@ -147,7 +147,7 @@
             var sum = Math.floor(((h_now-h)*60*60)+((m_now-m)*60)+(s_now-s));
             console.log(sum);
             for(var i=0; i<times.length; i++){
-                if (times[i]>starttime){
+                if (times[i]>sum){
                     index=i-1;
                 }
             }
