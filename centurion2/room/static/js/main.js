@@ -40,7 +40,6 @@
                 var chatLog= document.querySelector('#chat-log')
                 chatLog.value += (data.username + ": " + data.message + '\n');
                 chatLog.scrollTop = chatLog.scrollHeight;
-                console.log(timeArr);
             }
         };
 
@@ -147,6 +146,11 @@
             var s = starttime.slice(starttime.lastIndexOf(':')+1, starttime.length);
             var sum = Math.floor(((h_now-h)*60*60)+((m_now-m)*60)+(s_now-s));
             console.log(sum);
+            for(var i=0; i<times.length; i++){
+                if (times[i]>starttime){
+                    index=i-1;
+                }
+            }
             startcenturion(sum);
         }
 
