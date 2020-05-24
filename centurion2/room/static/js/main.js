@@ -147,8 +147,14 @@
             var sum = Math.floor(((h_now-h)*60*60)+((m_now-m)*60)+(s_now-s));
             console.log(sum);
             for(var i=0; i<times.length; i++){
-                if (times[i]>sum){
-                    index=i-1;
+                if (times[i]<sum){
+                    if (messages[i].emoji === "shot.png") {
+                        arcMove();
+                    }
+                }
+                else{
+                    index=i;
+                    i=times.length;
                 }
             }
             startcenturion(sum);
