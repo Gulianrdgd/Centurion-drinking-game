@@ -25,7 +25,7 @@ SECRET_KEY = 'zt=_jizgwccu)^va5j@5negw(k9w*#=w91=q+!&0y5sq3%lvi='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['centurion.vdhorst.dev']
 
 
 # Application definition
