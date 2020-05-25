@@ -18,7 +18,6 @@
             + roomName
             + '/'
         );
-
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             if(data.message==="/start centurion"){
@@ -52,6 +51,7 @@
             if (e.keyCode === 13) {  // enter, return
                 document.querySelector('#chat-message-submit').click();
             }
+
         };
 
         document.querySelector('#chat-message-submit').onclick = function(e) {
@@ -136,7 +136,6 @@
 
 
         function reconnect(starttime) {
-            console.log(starttime);
             var today = new Date();
             var h_now = today.getHours();
             var m_now = today.getMinutes();
@@ -145,7 +144,6 @@
             var m = starttime.slice(starttime.indexOf(':')+1,starttime.lastIndexOf(':'));
             var s = starttime.slice(starttime.lastIndexOf(':')+1, starttime.length);
             var sum = Math.floor(((h_now-h)*60*60)+((m_now-m)*60)+(s_now-s));
-            console.log(sum);
             for(var i=0; i<times.length; i++){
                 if (times[i]<sum){
                     if (messages[i].emoji === "shot.png") {
@@ -227,6 +225,9 @@
                 c.fillStyle='#e62272';
                 c.font = '30px Arial';
                 c.fillText(noShots+"/100", posX, posY+10);
+                if(noShots===100){
+                    confetti.start();
+                }
                 noShots++;
 
         }
