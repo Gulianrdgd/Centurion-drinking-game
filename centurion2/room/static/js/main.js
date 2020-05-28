@@ -78,6 +78,16 @@
                 }));
                 messageInputDom.value = '';
                 }
+            else if(message==="/help"){
+                var chatLog= document.querySelector('#chat-log')
+                chatLog.value += ("/start centurion - will start the centurion for all people in the room\n" +
+                    "/reconnect - makes sure you are in the correct place in the centurion mixtape\n" +
+                    "/set user [username] - will change your username to [username]\n" +
+                    "If that name is already taken, doppelganger will be added to that name\n" +
+                    "/help - shows this message"+'\n');
+                chatLog.scrollTop = chatLog.scrollHeight;
+                messageInputDom.value = '';
+                }
             else if(message.startsWith("/set user")){
                     tryingUsername=true;
                     chatSocket.send(JSON.stringify({
@@ -214,7 +224,8 @@
                                             "If you want to change your username type '/set user ' Followed by your chosen username. \n\n"+
                                             "If that name is already taken, then everyone knows you are a doppelganger\n\n"+
                                             "If you got disconnect you can come back to the room and type '/reconnect'\n\n"+
-                                            "Centurion will skip forward to where everyone else is\n\n"+
+                                            "Centurion will skip forward to where everyone else is\n\n" +
+                                            "To see this menu again enter /help\n\n"+
                                             "Have fun!\n"
         function arcMove(){
             var deegres = noShots*3.6;
