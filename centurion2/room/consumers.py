@@ -10,7 +10,7 @@ startArray = []
 class ChatConsumer(WebsocketConsumer):
 
     def remove(self):
-        del startarray[rooms.index(self.room_group_name)]
+        del startArray[rooms.index(self.room_group_name)]
         del users[rooms.index(self.room_group_name)]
         rooms.remove(self.room_group_name)
 
@@ -26,7 +26,7 @@ class ChatConsumer(WebsocketConsumer):
         if self.room_group_name not in rooms:
             rooms.append(self.room_group_name)
             users.append([])
-            startarray.append([])
+            startArray.append([])
         self.accept()
 
     def disconnect(self, close_code):
@@ -39,13 +39,11 @@ class ChatConsumer(WebsocketConsumer):
     # Receive message from WebSocket
 
     def receive(self, text_data):
-        global startarray
-        global started
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         username = text_data_json['username']
         if message == "/start centurion":
-            startarray[rooms.index(self.room_group_name)].append(text_data_json['starttime'])
+            startArray[rooms.index(self.room_group_name)].append(text_data_json['starttime'])
         elif message.startswith("/set user"):
             if username in users[rooms.index(self.room_group_name)]:
                 users[rooms.index(self.room_group_name)].remove(username)
@@ -72,7 +70,7 @@ class ChatConsumer(WebsocketConsumer):
         message = event['message']
         username = event['username']
         if message == "/reconnect":
-            for time in startarray[rooms.index(self.room_group_name)]:
+            for time in startArray[rooms.index(self.room_group_name)]:
                 self.send(text_data=json.dumps({
                     'message': "/connecttime" + time,
                     'username': "Server"
