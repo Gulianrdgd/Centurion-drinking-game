@@ -47,6 +47,8 @@
                 function enter_room() {
                     var roomName = document.querySelector('#room-name-input').value;
                     if(roomName !== "" && roomName != null){
+                        roomName = roomName.replace(/\s/g,'-');
+                        roomName = roomName.toLowerCase();
                         window.location.pathname =  roomName + '/';
                     }
                 }

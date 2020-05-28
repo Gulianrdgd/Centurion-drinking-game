@@ -2,13 +2,20 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
-started = False
-starttime=0
-users=[]
+users = []
+rooms = []
+startArray = []
+
 
 class ChatConsumer(WebsocketConsumer):
 
+    def remove(self):
+        del startarray[rooms.index(self.room_group_name)]
+        del users[rooms.index(self.room_group_name)]
+        rooms.remove(self.room_group_name)
+
     def connect(self):
+        global rooms
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'room_%s' % self.room_name
         # Join room group
@@ -16,7 +23,10 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-
+        if self.room_group_name not in rooms:
+            rooms.append(self.room_group_name)
+            users.append([])
+            startarray.append([])
         self.accept()
 
     def disconnect(self, close_code):
@@ -27,24 +37,25 @@ class ChatConsumer(WebsocketConsumer):
         )
 
     # Receive message from WebSocket
+
     def receive(self, text_data):
-        global starttime
+        global startarray
         global started
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         username = text_data_json['username']
         if message == "/start centurion":
-            starttime = text_data_json['starttime']
-            started = True
+            startarray[rooms.index(self.room_group_name)].append(text_data_json['starttime'])
         elif message.startswith("/set user"):
-            if username in users:
-                users.remove(username)
+            if username in users[rooms.index(self.room_group_name)]:
+                users[rooms.index(self.room_group_name)].remove(username)
 
-            if message.split("/set user", 1)[1] in users:
+            if message.split("/set user", 1)[1] in users[rooms.index(self.room_group_name)]:
                 message="/set user" + message.split("/set user", 1)[1] + " - Doppleganger"
-                users.append(message.split("/set user", 1)[1] + " - Doppleganger")
+                users[rooms.index(self.room_group_name)].append(message.split("/set user", 1)[1] + " - Doppleganger")
             else:
-                users.append(message.split("/set user", 1)[1])
+                if message.split("/set user", 1)[1] != " closing_screen":
+                    users[rooms.index(self.room_group_name)].append(message.split("/set user", 1)[1])
 
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
@@ -60,11 +71,12 @@ class ChatConsumer(WebsocketConsumer):
     def chat_message(self, event):
         message = event['message']
         username = event['username']
-        if message == "/reconnect" and started:
-            self.send(text_data=json.dumps({
-                'message': "/connecttime" + starttime,
-                'username': "Server"
-            }))
+        if message == "/reconnect":
+            for time in startarray[rooms.index(self.room_group_name)]:
+                self.send(text_data=json.dumps({
+                    'message': "/connecttime" + time,
+                    'username': "Server"
+                }))
         else:
             # Send message to WebSocket
             self.send(text_data=json.dumps({

@@ -170,6 +170,24 @@
         c.lineCap = 'round';
         arcMove();
 
+
+        window.onbeforeunload = closingCode;
+        function closingCode(){
+            chatSocket.send(JSON.stringify({
+                        'message': "/set user closing_screen",
+                        'username': username
+                    }));
+        return null;
+        }
+        window.onload = reconnectcode;
+        function reconnectcode(){
+            tryingReconnect=true;
+            chatSocket.send(JSON.stringify({
+                    'message': "/reconnect",
+                    'username': username
+            }));
+        }
+
         function add_message(){
             var list=document.getElementById("centurionMessages");
             var node = document.createElement("li");
