@@ -7,6 +7,7 @@
         var username=" No_user_name";
         var tryingReconnect=false;
         var tryingUsername=false;
+        var started=false;
         var widget;
         var time=0;
         var t;
@@ -58,14 +59,16 @@
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             if (message === "/start centurion") {
-                var today = new Date();
-                var starttime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                chatSocket.send(JSON.stringify({
-                    'message': message,
-                    'username': "Server",
-                    'starttime' : starttime,
-            }));
-            messageInputDom.value = '';
+                if(!started) {
+                    var today = new Date();
+                    var starttime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    chatSocket.send(JSON.stringify({
+                        'message': message,
+                        'username': "Server",
+                        'starttime': starttime,
+                    }));
+                    messageInputDom.value = '';
+                }
             }
             else if(message==="/reconnect"){
                 tryingReconnect=true;
@@ -113,6 +116,7 @@
             widget = Mixcloud.PlayerWidget(document.getElementById("centurion"));
             widget.ready.then(function() {
             // Put code that interacts with the widget here
+                started=true;
                 if(start===0){
                     widget.play();
                     t=setInterval(checkShot,1000);
